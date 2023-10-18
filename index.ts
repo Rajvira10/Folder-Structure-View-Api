@@ -3,12 +3,14 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import folderRoutes from "./api/routes/folders";
+import { createRootFolder } from "./api/models/folderSchema";
 
 require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 const mongoURI = process.env.MONGODB_URI;
 mongoose
@@ -18,6 +20,14 @@ mongoose
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
+  });
+
+createRootFolder()
+  .then(() => {
+    console.log("Root folder created successfully.");
+  })
+  .catch((error) => {
+    console.error("Error creating root folder:", error);
   });
 
 app.use("/api/folders", folderRoutes);

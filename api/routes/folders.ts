@@ -17,6 +17,10 @@ router.post("/", async (req, res) => {
   try {
     const { name, parent } = req.body;
 
+    const existingFolders = await FolderModel.find().exec();
+
+    const isRoot = existingFolders.length === 0;
+
     if (parent) {
       const parentFolder = await FolderModel.findById(parent);
       if (!parentFolder) {
@@ -24,11 +28,12 @@ router.post("/", async (req, res) => {
       }
     }
 
-    const folder = new FolderModel({ name, parent });
+    const folder = new FolderModel({ name, parent, isRoot }); // Pass isRoot value
     const savedFolder = await folder.save();
 
     res.status(201).json(savedFolder);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -49,7 +54,7 @@ router.delete("/:id", async (req, res) => {
     await FolderModel.findByIdAndDelete(folderId);
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: error.message });
   }
 });
 

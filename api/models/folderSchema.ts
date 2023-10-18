@@ -28,4 +28,17 @@ interface FolderDocument extends Document {
 
 const FolderModel = mongoose.model<FolderDocument>("Folder", folderSchema);
 
+const createRootFolder = async () => {
+  const rootFolderExists = await FolderModel.exists({
+    name: "Root",
+    isRoot: true,
+  });
+
+  if (!rootFolderExists) {
+    const rootFolder = new FolderModel({ name: "Root", isRoot: true });
+    await rootFolder.save();
+  }
+};
+
 export default FolderModel;
+export { createRootFolder };
