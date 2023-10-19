@@ -36,6 +36,9 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
