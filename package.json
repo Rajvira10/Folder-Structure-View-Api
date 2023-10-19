@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "bin": {
-    "execute": "index.ts"
+    "hwrld": "dist/index.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
